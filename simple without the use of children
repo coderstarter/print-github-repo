@@ -1,0 +1,27 @@
+import "./styles.css";
+import { useState, useEffect } from "react";
+
+function H1(props) {
+  return <h1>{props.children}</h1>;
+}
+
+let url = "https://api.github.com/users/coderstarter/repos";
+
+function App() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+  console.log(data)
+  return (
+    <>
+      {data.map((el) => {
+        return <p>{el.name}</p>;
+      })}
+    </>
+  );
+}
+
+export default App;
