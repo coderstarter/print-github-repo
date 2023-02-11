@@ -1,0 +1,42 @@
+import "./styles.css";
+import { useState, useEffect } from "react";
+
+function H1(props) {
+  return <h1>{props.children}</h1>;
+}
+
+let url = "https://api.github.com/users/coderstarter/repos";
+
+function Fetch(props) {
+  const { url, children } = props;
+  const [data, setData] = useState(null);
+
+  useEffect(
+    () => {
+      async function handler() {
+        const res = await fetch(url);
+        const data = await res.json();
+        setData(data);
+      }
+      handler();
+    },
+    { url }
+  );
+  return children(data);
+}
+
+function App() {
+  return (
+    <Fetch url={url}>
+      {(data) => {
+        if (data) {
+          return data.map((el) => {
+            return <p>{el.name}</p>;
+          });
+        }
+      }}
+    </Fetch>
+  );
+}
+
+export default App;
